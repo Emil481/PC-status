@@ -193,7 +193,7 @@ function updateNetworkView() {
   const connection =
     navigator.connection || navigator.mozConnection || navigator.webkitConnection;
   const speed = connection?.effectiveType
-    ? ` Nettverkstype: ${connection.effectiveType.toUpperCase()}.`
+    ? ` Hastighetsklasse: ${connection.effectiveType.toUpperCase()}.`
     : "";
 
   summaryNetwork.textContent = isOnline ? "Online" : "Offline";
