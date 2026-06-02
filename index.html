@@ -3,7 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PC-status</title>
+    <meta name="theme-color" content="#0f7b6c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Enhetsstatus</title>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
@@ -11,12 +13,28 @@
       <section class="status-panel" aria-labelledby="page-title">
         <div class="top-row">
           <div>
-            <p class="eyebrow">PC-monitor</p>
-            <h1 id="page-title">PC-status</h1>
+            <p class="eyebrow">Mobil og PC</p>
+            <h1 id="page-title">Enhetsstatus</h1>
+            <p class="intro">Rask oversikt over batteri, nett, skjerm og lokasjon.</p>
           </div>
           <button id="refreshBtn" class="icon-button" type="button" title="Oppdater status" aria-label="Oppdater status">
             &#8635;
           </button>
+        </div>
+
+        <div class="summary-strip" aria-label="Kort status">
+          <div>
+            <span class="summary-label">Nett</span>
+            <strong id="summaryNetwork">Sjekker...</strong>
+          </div>
+          <div>
+            <span class="summary-label">Tid</span>
+            <strong id="summaryTime">--:--</strong>
+          </div>
+          <div>
+            <span class="summary-label">Enhet</span>
+            <strong id="summaryDevice">Ukjent</strong>
+          </div>
         </div>
 
         <div class="status-grid">
@@ -29,7 +47,7 @@
               <div id="batteryFill" class="battery-fill"></div>
             </div>
             <p id="batteryPercent" class="metric-value">Laster...</p>
-            <p id="batteryState" class="metric-detail">Sjekker om PC-en lader.</p>
+            <p id="batteryState" class="metric-detail">Sjekker om enheten lader.</p>
           </article>
 
           <article class="metric-card">
@@ -41,13 +59,42 @@
             <p id="locationDetail" class="metric-detail">Trykk p&aring; knappen for &aring; vise by og land.</p>
             <button id="locationBtn" class="primary-button" type="button">Hent lokasjon</button>
           </article>
+
+          <article class="metric-card compact">
+            <div class="metric-header">
+              <span class="metric-icon" aria-hidden="true">~</span>
+              <h2>Nettverk</h2>
+            </div>
+            <p id="networkValue" class="metric-value small">Sjekker...</p>
+            <p id="networkDetail" class="metric-detail">Viser om nettleseren er online.</p>
+          </article>
+
+          <article class="metric-card compact">
+            <div class="metric-header">
+              <span class="metric-icon" aria-hidden="true">#</span>
+              <h2>Skjerm</h2>
+            </div>
+            <p id="screenValue" class="metric-value small">Sjekker...</p>
+            <p id="screenDetail" class="metric-detail">Viser skjermbredde, h&oslash;yde og retning.</p>
+          </article>
         </div>
 
         <section id="chargeAdvice" class="advice" aria-live="polite">
           Venter p&aring; batteridata.
         </section>
+
+        <section class="tips" aria-labelledby="tips-title">
+          <h2 id="tips-title">Mobilnotat</h2>
+          <ul>
+            <li>Lokasjon fungerer best n&aring;r siden &aring;pnes med HTTPS.</li>
+            <li>Batteriprosent kan v&aelig;re skjult p&aring; iPhone og enkelte nettlesere.</li>
+            <li>Legg siden p&aring; hjemskjermen hvis du vil bruke den som en liten statusapp.</li>
+          </ul>
+        </section>
       </section>
     </main>
+
+    <noscript>Denne siden trenger JavaScript for &aring; hente lokasjon og batteristatus.</noscript>
 
     <script src="script.js"></script>
   </body>
