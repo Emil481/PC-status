@@ -8,11 +8,26 @@
     <meta name="apple-mobile-web-app-title" content="Status">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="format-detection" content="telephone=no">
-    <title>Enhetsstatus</title>
+    <title>Enhetsstatus v5</title>
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="stylesheet" href="styles.css?v=4">
+    <link rel="stylesheet" href="styles.css?v=5">
+    <style>
+      .version-ribbon {
+        position: fixed;
+        z-index: 50;
+        left: 12px;
+        bottom: 12px;
+        border-radius: 999px;
+        background: #ffbf3f;
+        color: #17202a;
+        padding: 9px 12px;
+        font: 700 13px Arial, Helvetica, sans-serif;
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+      }
+    </style>
   </head>
   <body>
+    <div class="version-ribbon">NY DESIGN v5</div>
     <main class="app-shell">
       <section class="status-panel" aria-labelledby="page-title">
         <div class="hero-band" aria-hidden="true">
@@ -130,6 +145,6 @@
 
     <noscript>Denne siden trenger JavaScript for &aring; hente lokasjon og batteristatus.</noscript>
 
-    <script src="script.js?v=4"></script>
+    <script src="script.js?v=5"></script>
   </body>
 </html>

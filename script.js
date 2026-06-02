@@ -432,7 +432,7 @@ function registerOfflineSupport() {
     return;
   }
 
-  navigator.serviceWorker.register("sw.js").catch(() => {});
+  navigator.serviceWorker.register("sw.js?v=5").catch(() => {});
 }
 
 function refreshAll() {
