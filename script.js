@@ -17,10 +17,16 @@ const screenDetail = document.getElementById("screenDetail");
 const permissionValue = document.getElementById("permissionValue");
 const permissionDetail = document.getElementById("permissionDetail");
 const copyLocationBtn = document.getElementById("copyLocationBtn");
+const mapLocationBtn = document.getElementById("mapLocationBtn");
+const shareLocationBtn = document.getElementById("shareLocationBtn");
+const locationUpdated = document.getElementById("locationUpdated");
 
 let batteryManager = null;
 let batteryListenersAttached = false;
 let lastCoordinates = "";
+let lastLatitude = null;
+let lastLongitude = null;
+let lastPlaceName = "";
 
 function isMobileDevice() {
   return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
@@ -35,6 +41,28 @@ function vibrateShort() {
   if ("vibrate" in navigator) {
     navigator.vibrate(18);
   }
+}
+
+function formatShortTime(date = new Date()) {
+  return date.toLocaleTimeString("no-NO", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+function setLocationActionsEnabled(enabled) {
+  copyLocationBtn.disabled = !enabled;
+  mapLocationBtn.disabled = !enabled;
+  shareLocationBtn.disabled = !enabled || !("share" in navigator);
+}
+
+function rememberLocation(latitude, longitude, label = "") {
+  lastLatitude = latitude;
+  lastLongitude = longitude;
+  lastCoordinates = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
+  lastPlaceName = label;
+  locationUpdated.textContent = `Sist hentet kl. ${formatShortTime()}.`;
+  setLocationActionsEnabled(true);
 }
 
 function getDeviceLabel() {
@@ -292,12 +320,11 @@ async function reverseGeocode(latitude, longitude) {
 
 function setCoordinateFallback(position) {
   const { latitude, longitude, accuracy } = position.coords;
-  lastCoordinates = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
+  rememberLocation(latitude, longitude);
   locationValue.textContent = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
   locationDetail.textContent = `Fant koordinater, men ikke by og land. N\u00f8yaktighet: ca. ${Math.round(
     accuracy
   )} meter.`;
-  copyLocationBtn.disabled = false;
 }
 
 function getLocation() {
@@ -311,7 +338,7 @@ function getLocation() {
 
   locationBtn.disabled = true;
   locationBtn.textContent = "Henter...";
-  copyLocationBtn.disabled = true;
+  setLocationActionsEnabled(false);
   locationValue.textContent = "Henter...";
   locationDetail.textContent = "Venter p\u00e5 svar fra nettleseren.";
 
@@ -321,12 +348,11 @@ function getLocation() {
 
       try {
         const place = await reverseGeocode(latitude, longitude);
-        lastCoordinates = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
+        rememberLocation(latitude, longitude, `${place.city}, ${place.country}`);
         locationValue.textContent = `${place.city}, ${place.country}`;
         locationDetail.textContent = `Koordinater: ${latitude.toFixed(5)}, ${longitude.toFixed(
           5
         )}. N\u00f8yaktighet: ca. ${Math.round(accuracy)} meter.`;
-        copyLocationBtn.disabled = false;
       } catch {
         setCoordinateFallback(position);
       } finally {
@@ -368,6 +394,47 @@ async function copyLocation() {
   }
 }
 
+function openMap() {
+  if (lastLatitude === null || lastLongitude === null) {
+    return;
+  }
+
+  vibrateShort();
+  const url = `https://www.openstreetmap.org/?mlat=${lastLatitude}&mlon=${lastLongitude}#map=15/${lastLatitude}/${lastLongitude}`;
+  window.open(url, "_blank", "noopener");
+}
+
+async function shareLocation() {
+  if (!lastCoordinates || !("share" in navigator)) {
+    return;
+  }
+
+  vibrateShort();
+  const title = lastPlaceName ? `Lokasjon: ${lastPlaceName}` : "Min lokasjon";
+  const mapUrl =
+    lastLatitude !== null && lastLongitude !== null
+      ? `https://www.openstreetmap.org/?mlat=${lastLatitude}&mlon=${lastLongitude}#map=15/${lastLatitude}/${lastLongitude}`
+      : "";
+
+  try {
+    await navigator.share({
+      title,
+      text: `${title}\nKoordinater: ${lastCoordinates}`,
+      url: mapUrl,
+    });
+  } catch {
+    // User canceled share or the browser blocked it.
+  }
+}
+
+function registerOfflineSupport() {
+  if (!("serviceWorker" in navigator) || !window.isSecureContext) {
+    return;
+  }
+
+  navigator.serviceWorker.register("sw.js").catch(() => {});
+}
+
 function refreshAll() {
   vibrateShort();
   initBattery();
@@ -381,10 +448,14 @@ function refreshAll() {
 refreshBtn.addEventListener("click", refreshAll);
 locationBtn.addEventListener("click", getLocation);
 copyLocationBtn.addEventListener("click", copyLocation);
+mapLocationBtn.addEventListener("click", openMap);
+shareLocationBtn.addEventListener("click", shareLocation);
 window.addEventListener("online", updateNetworkView);
 window.addEventListener("offline", updateNetworkView);
 window.addEventListener("resize", updateScreenView);
 window.addEventListener("orientationchange", updateScreenView);
 
+setLocationActionsEnabled(false);
 refreshAll();
+registerOfflineSupport();
 setInterval(updateClock, 30000);

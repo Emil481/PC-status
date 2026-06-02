@@ -10,7 +10,7 @@
     <meta name="format-detection" content="telephone=no">
     <title>Enhetsstatus</title>
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="stylesheet" href="styles.css?v=3">
+    <link rel="stylesheet" href="styles.css?v=4">
   </head>
   <body>
     <main class="app-shell">
@@ -76,9 +76,12 @@
             </div>
             <p id="locationValue" class="metric-value small">Ikke hentet enn&aring;</p>
             <p id="locationDetail" class="metric-detail">Trykk p&aring; knappen for &aring; vise by og land.</p>
+            <p id="locationUpdated" class="mini-detail">Ikke oppdatert enn&aring;.</p>
             <div class="button-row">
               <button id="locationBtn" class="primary-button" type="button">Hent lokasjon</button>
               <button id="copyLocationBtn" class="secondary-button" type="button" disabled>Kopier</button>
+              <button id="mapLocationBtn" class="secondary-button" type="button" disabled>Kart</button>
+              <button id="shareLocationBtn" class="secondary-button" type="button" disabled>Del</button>
             </div>
           </article>
 
@@ -127,6 +130,6 @@
 
     <noscript>Denne siden trenger JavaScript for &aring; hente lokasjon og batteristatus.</noscript>
 
-    <script src="script.js?v=3"></script>
+    <script src="script.js?v=4"></script>
   </body>
 </html>

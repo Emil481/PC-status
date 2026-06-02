@@ -9,6 +9,9 @@ En enkel GitHub Pages-side som fungerer paa PC og telefon, og viser:
 - om siden er klar for lokasjon paa telefon
 - by og land, hvis brukeren gir nettleseren lokasjonstilgang
 - kopiering av koordinater etter at lokasjon er hentet
+- kartlenke og deling av lokasjon paa telefon
+- automatisk mork modus hvis enheten bruker det
+- enkel offline-stotte etter forste besok paa HTTPS
 
 ## Publiser paa GitHub Pages
 
@@ -17,6 +20,7 @@ Last opp disse filene til repoet ditt:
 - `index.html`
 - `styles.css`
 - `script.js`
+- `sw.js`
 - `manifest.webmanifest`
 - `README.md`
 

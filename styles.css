@@ -451,6 +451,13 @@ h2 {
   line-height: 1.5;
 }
 
+.mini-detail {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
 .button-row {
   display: flex;
   flex-wrap: wrap;
@@ -675,5 +682,82 @@ h2 {
 
   .summary-strip strong {
     font-size: 1rem;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --bg: #101820;
+    --panel: #17212b;
+    --text: #eef4f6;
+    --muted: #aebdca;
+    --line: #2b3a47;
+    --ink: #eef4f6;
+    --accent-soft: #123c36;
+    --blue-soft: #182b57;
+    --sun-soft: #3b2d10;
+    --rose-soft: #421827;
+    --violet-soft: #241f4f;
+    --shadow: 0 22px 60px rgba(0, 0, 0, 0.34);
+    --shadow-soft: 0 12px 28px rgba(0, 0, 0, 0.24);
+  }
+
+  body {
+    background:
+      linear-gradient(180deg, #142a2f 0, transparent 280px),
+      linear-gradient(135deg, rgba(255, 191, 63, 0.13), transparent 28%),
+      linear-gradient(225deg, rgba(60, 109, 240, 0.18), transparent 32%),
+      var(--bg);
+  }
+
+  body::before {
+    background-image:
+      linear-gradient(rgba(238, 244, 246, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(238, 244, 246, 0.04) 1px, transparent 1px);
+  }
+
+  .status-panel,
+  .summary-strip > div,
+  .metric-card,
+  .tips {
+    background: rgba(23, 33, 43, 0.9);
+    border-color: var(--line);
+  }
+
+  .summary-strip > div,
+  .metric-card,
+  .advice,
+  .tips {
+    box-shadow: var(--shadow-soft);
+  }
+
+  .icon-button,
+  .secondary-button {
+    background: #22303d;
+    color: var(--text);
+  }
+
+  .battery-meter {
+    background: #101820;
+    border-color: #d7e0e6;
+  }
+
+  .advice.neutral {
+    background: #182531;
+    border-color: var(--line);
+    color: var(--text);
+  }
+
+  .tips ul {
+    color: var(--muted);
+  }
+
+  @media (max-width: 430px) {
+    body {
+      background:
+        linear-gradient(180deg, #17202a 0, #163d45 178px, #101820 178px),
+        var(--bg);
+    }
   }
 }
