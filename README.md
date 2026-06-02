@@ -1,24 +1,21 @@
 # PC-status
 
-En enkel statisk nettside som viser:
+En enkel GitHub Pages-side som viser:
 
-- batteriprosent
-- om PC-en lader
+- batteriprosent, hvis nettleseren stotter Battery Status API
+- om PC-en lader eller gaar paa batteri
 - om PC-en bor lades
-- lokasjon, hvis brukeren gir nettleseren tilgang
+- by og land, hvis brukeren gir nettleseren lokasjonstilgang
 
-## Bruk med GitHub Pages
+## Publiser paa GitHub Pages
 
-1. Last opp `index.html`, `styles.css` og `script.js` til GitHub-repoet ditt.
-2. Gaa til `Settings` -> `Pages`.
-3. Velg `Deploy from a branch`.
-4. Velg branch `main` og mappe `/root`.
-5. Trykk `Save`.
+Last opp disse filene til repoet ditt:
 
-GitHub gir deg en lenke etter litt tid, vanligvis:
+- `index.html`
+- `styles.css`
+- `script.js`
+- `README.md`
 
-```text
-https://brukernavn.github.io/repo-navn/
-```
+Gaa deretter til `Settings` -> `Pages` i GitHub-repoet, velg `Deploy from a branch`, branch `main`, og mappe `/root`.
 
-Merk: Batteridata fungerer bare i nettlesere som stotter Battery Status API. Lokasjon krever at brukeren godkjenner tilgang.
+Merk: Lokasjon krever at brukeren godkjenner tilgang. Batteridata fungerer ikke i alle nettlesere. Chrome og Edge har best sjanse til aa vise batteriprosent.

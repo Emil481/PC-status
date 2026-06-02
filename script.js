@@ -14,21 +14,49 @@ function setAdvice(message, type = "neutral") {
   chargeAdvice.className = `advice ${type}`;
 }
 
+function setBatteryUnavailable() {
+  batteryPercent.textContent = "--";
+  batteryState.textContent = "Batteridata er ikke tilgjengelig i denne nettleseren.";
+  batteryFill.style.width = "100%";
+  batteryFill.style.background = "#9aa4b2";
+  setAdvice(
+    "Pr\u00f8v Chrome eller Edge p\u00e5 GitHub Pages hvis du vil vise batteriprosent.",
+    "neutral"
+  );
+}
+
+function formatChargeTime(seconds) {
+  if (!Number.isFinite(seconds) || seconds <= 0) {
+    return "";
+  }
+
+  const minutes = Math.round(seconds / 60);
+  if (minutes < 60) {
+    return ` Ca. ${minutes} min igjen.`;
+  }
+
+  const hours = Math.floor(minutes / 60);
+  const restMinutes = minutes % 60;
+  return ` Ca. ${hours} t ${restMinutes} min igjen.`;
+}
+
 function updateBatteryView() {
   if (!batteryManager) {
-    batteryPercent.textContent = "Ukjent";
-    batteryState.textContent = "Denne nettleseren deler ikke batteridata.";
-    batteryFill.style.width = "0%";
-    setAdvice("Batteristatus er ikke tilgjengelig i denne nettleseren.", "neutral");
+    setBatteryUnavailable();
     return;
   }
 
   const percent = Math.round(batteryManager.level * 100);
   const isCharging = batteryManager.charging;
+  const timeText = isCharging
+    ? formatChargeTime(batteryManager.chargingTime)
+    : formatChargeTime(batteryManager.dischargingTime);
 
   batteryPercent.textContent = `${percent}%`;
-  batteryState.textContent = isCharging ? "PC-en lader akkurat n\u00e5." : "PC-en g\u00e5r p\u00e5 batteri.";
-  batteryFill.style.width = `${percent}%`;
+  batteryState.textContent = isCharging
+    ? `PC-en lader akkurat n\u00e5.${timeText}`
+    : `PC-en g\u00e5r p\u00e5 batteri.${timeText}`;
+  batteryFill.style.width = `${Math.max(percent, 4)}%`;
 
   if (percent <= 20 && !isCharging) {
     batteryFill.style.background = "var(--warn)";
@@ -47,23 +75,64 @@ function updateBatteryView() {
 
 async function initBattery() {
   if (!("getBattery" in navigator)) {
-    updateBatteryView();
+    setBatteryUnavailable();
     return;
   }
 
-  batteryManager = await navigator.getBattery();
-  updateBatteryView();
+  try {
+    batteryManager = await navigator.getBattery();
+    updateBatteryView();
 
-  batteryManager.addEventListener("levelchange", updateBatteryView);
-  batteryManager.addEventListener("chargingchange", updateBatteryView);
+    batteryManager.addEventListener("levelchange", updateBatteryView);
+    batteryManager.addEventListener("chargingchange", updateBatteryView);
+    batteryManager.addEventListener("chargingtimechange", updateBatteryView);
+    batteryManager.addEventListener("dischargingtimechange", updateBatteryView);
+  } catch {
+    batteryManager = null;
+    setBatteryUnavailable();
+  }
 }
 
-function formatCoordinates(position) {
-  const { latitude, longitude, accuracy } = position.coords;
+function getBestCity(address) {
+  return (
+    address.city ||
+    address.town ||
+    address.village ||
+    address.municipality ||
+    address.county ||
+    "Ukjent by"
+  );
+}
+
+async function reverseGeocode(latitude, longitude) {
+  const params = new URLSearchParams({
+    format: "jsonv2",
+    lat: latitude,
+    lon: longitude,
+    zoom: "10",
+    addressdetails: "1",
+    "accept-language": "no",
+  });
+  const response = await fetch(`https://nominatim.openstreetmap.org/reverse?${params}`);
+
+  if (!response.ok) {
+    throw new Error("Kunne ikke hente by og land.");
+  }
+
+  const data = await response.json();
+  const address = data.address || {};
   return {
-    main: `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`,
-    detail: `N\u00f8yaktighet: ca. ${Math.round(accuracy)} meter.`,
+    city: getBestCity(address),
+    country: address.country || "Ukjent land",
   };
+}
+
+function setCoordinateFallback(position) {
+  const { latitude, longitude, accuracy } = position.coords;
+  locationValue.textContent = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
+  locationDetail.textContent = `Fant koordinater, men ikke by og land. N\u00f8yaktighet: ca. ${Math.round(
+    accuracy
+  )} meter.`;
 }
 
 function getLocation() {
@@ -77,10 +146,18 @@ function getLocation() {
   locationDetail.textContent = "Venter p\u00e5 svar fra nettleseren.";
 
   navigator.geolocation.getCurrentPosition(
-    (position) => {
-      const location = formatCoordinates(position);
-      locationValue.textContent = location.main;
-      locationDetail.textContent = location.detail;
+    async (position) => {
+      const { latitude, longitude, accuracy } = position.coords;
+
+      try {
+        const place = await reverseGeocode(latitude, longitude);
+        locationValue.textContent = `${place.city}, ${place.country}`;
+        locationDetail.textContent = `Koordinater: ${latitude.toFixed(5)}, ${longitude.toFixed(
+          5
+        )}. N\u00f8yaktighet: ca. ${Math.round(accuracy)} meter.`;
+      } catch {
+        setCoordinateFallback(position);
+      }
     },
     (error) => {
       locationValue.textContent = "Kunne ikke hente";
@@ -94,10 +171,7 @@ function getLocation() {
   );
 }
 
-refreshBtn.addEventListener("click", updateBatteryView);
+refreshBtn.addEventListener("click", initBattery);
 locationBtn.addEventListener("click", getLocation);
 
-initBattery().catch(() => {
-  batteryManager = null;
-  updateBatteryView();
-});
+initBattery();
