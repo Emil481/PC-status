@@ -22,4 +22,4 @@ Last opp disse filene til repoet ditt:
 
 Gaa deretter til `Settings` -> `Pages` i GitHub-repoet, velg `Deploy from a branch`, branch `main`, og mappe `/root`.
 
-Merk: Lokasjon krever at brukeren godkjenner tilgang. Batteridata fungerer ikke i alle nettlesere, og telefoner skjuler ofte batteriprosenten for nettsider. Chrome og Edge har best sjanse til aa vise batteriprosent.
+Merk: Lokasjon krever at brukeren godkjenner tilgang. Batteridata og lading fungerer ikke i alle nettlesere. Safari stotter normalt ikke dette for vanlige nettsider, og Chrome krever HTTPS/sikker kontekst. Telefoner skjuler ofte batteriprosenten helt.

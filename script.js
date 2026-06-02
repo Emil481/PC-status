@@ -99,19 +99,41 @@ async function updateLocationPermissionView() {
   }
 }
 
-function setBatteryUnavailable() {
+function getBrowserLabel() {
+  const ua = navigator.userAgent;
+
+  if (/Edg\//i.test(ua)) {
+    return "Edge";
+  }
+
+  if (/Chrome\//i.test(ua) && !/Edg\//i.test(ua)) {
+    return "Chrome";
+  }
+
+  if (/Safari\//i.test(ua) && !/Chrome\//i.test(ua)) {
+    return "Safari";
+  }
+
+  if (/Firefox\//i.test(ua)) {
+    return "Firefox";
+  }
+
+  return "nettleseren";
+}
+
+function setBatteryUnavailable(reason = "") {
   batteryPercent.textContent = "--";
-  batteryState.textContent = "Batteridata er ikke tilgjengelig i denne nettleseren.";
+  batteryState.textContent = reason || "Denne nettleseren lar ikke nettsiden lese batteri eller lading.";
   batteryFill.style.width = "100%";
   batteryFill.style.background = "#9aa4b2";
   if (isMobileDevice()) {
     setAdvice(
-      "Telefoner skjuler ofte batteriprosent for nettsider. Lokasjon skal fortsatt fungere.",
+      "Telefoner skjuler ofte batteri og lading for nettsider. Resten av statusen fungerer fortsatt.",
       "neutral"
     );
   } else {
     setAdvice(
-      "Pr\u00f8v Chrome eller Edge p\u00e5 GitHub Pages hvis du vil vise batteriprosent.",
+      "Batteri fungerer bare i noen nettlesere og vanligvis bare p\u00e5 HTTPS.",
       "neutral"
     );
   }
@@ -166,8 +188,21 @@ function updateBatteryView() {
 }
 
 async function initBattery() {
+  const browser = getBrowserLabel();
+
   if (!("getBattery" in navigator)) {
-    setBatteryUnavailable();
+    setBatteryUnavailable(
+      browser === "Safari"
+        ? "Safari st\u00f8tter ikke batterim\u00e5ling for vanlige nettsider."
+        : `${browser} tilbyr ikke batteridata her.`
+    );
+    return;
+  }
+
+  if (!window.isSecureContext) {
+    setBatteryUnavailable(
+      `${browser} krever HTTPS for \u00e5 vise batteri og lading.`
+    );
     return;
   }
 
@@ -184,7 +219,7 @@ async function initBattery() {
     }
   } catch {
     batteryManager = null;
-    setBatteryUnavailable();
+    setBatteryUnavailable(`${browser} blokkerte batteridata.`);
   }
 }
 
