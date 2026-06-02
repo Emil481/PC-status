@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#0f7b6c">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Status">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="format-detection" content="telephone=no">
     <title>Enhetsstatus</title>
+    <link rel="manifest" href="manifest.webmanifest">
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
@@ -15,7 +19,7 @@
           <div>
             <p class="eyebrow">Mobil og PC</p>
             <h1 id="page-title">Enhetsstatus</h1>
-            <p class="intro">Rask oversikt over batteri, nett, skjerm og lokasjon.</p>
+            <p class="intro">Rask oversikt over det som betyr mest på telefonen akkurat nå.</p>
           </div>
           <button id="refreshBtn" class="icon-button" type="button" title="Oppdater status" aria-label="Oppdater status">
             &#8635;
@@ -34,6 +38,10 @@
           <div>
             <span class="summary-label">Enhet</span>
             <strong id="summaryDevice">Ukjent</strong>
+          </div>
+          <div>
+            <span class="summary-label">Sikkerhet</span>
+            <strong id="summarySecure">Sjekker...</strong>
           </div>
         </div>
 
@@ -57,7 +65,10 @@
             </div>
             <p id="locationValue" class="metric-value small">Ikke hentet enn&aring;</p>
             <p id="locationDetail" class="metric-detail">Trykk p&aring; knappen for &aring; vise by og land.</p>
-            <button id="locationBtn" class="primary-button" type="button">Hent lokasjon</button>
+            <div class="button-row">
+              <button id="locationBtn" class="primary-button" type="button">Hent lokasjon</button>
+              <button id="copyLocationBtn" class="secondary-button" type="button" disabled>Kopier</button>
+            </div>
           </article>
 
           <article class="metric-card compact">
@@ -76,6 +87,15 @@
             </div>
             <p id="screenValue" class="metric-value small">Sjekker...</p>
             <p id="screenDetail" class="metric-detail">Viser skjermbredde, h&oslash;yde og retning.</p>
+          </article>
+
+          <article class="metric-card compact">
+            <div class="metric-header">
+              <span class="metric-icon" aria-hidden="true">!</span>
+              <h2>Tilgang</h2>
+            </div>
+            <p id="permissionValue" class="metric-value small">Sjekker...</p>
+            <p id="permissionDetail" class="metric-detail">Viser om nettleseren kan bruke lokasjon her.</p>
           </article>
         </div>
 

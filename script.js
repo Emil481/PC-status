@@ -9,13 +9,18 @@ const locationDetail = document.getElementById("locationDetail");
 const summaryNetwork = document.getElementById("summaryNetwork");
 const summaryTime = document.getElementById("summaryTime");
 const summaryDevice = document.getElementById("summaryDevice");
+const summarySecure = document.getElementById("summarySecure");
 const networkValue = document.getElementById("networkValue");
 const networkDetail = document.getElementById("networkDetail");
 const screenValue = document.getElementById("screenValue");
 const screenDetail = document.getElementById("screenDetail");
+const permissionValue = document.getElementById("permissionValue");
+const permissionDetail = document.getElementById("permissionDetail");
+const copyLocationBtn = document.getElementById("copyLocationBtn");
 
 let batteryManager = null;
 let batteryListenersAttached = false;
+let lastCoordinates = "";
 
 function isMobileDevice() {
   return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
@@ -24,6 +29,12 @@ function isMobileDevice() {
 function setAdvice(message, type = "neutral") {
   chargeAdvice.textContent = message;
   chargeAdvice.className = `advice ${type}`;
+}
+
+function vibrateShort() {
+  if ("vibrate" in navigator) {
+    navigator.vibrate(18);
+  }
 }
 
 function getDeviceLabel() {
@@ -48,6 +59,44 @@ function getDeviceLabel() {
   }
 
   return "Ukjent";
+}
+
+function updateSecureContextView() {
+  const isLocalhost = ["localhost", "127.0.0.1", "::1"].includes(location.hostname);
+  const isSecure = window.isSecureContext || isLocalhost;
+
+  summarySecure.textContent = isSecure ? "OK" : "HTTP";
+  permissionValue.textContent = isSecure ? "Klar" : "Mangler HTTPS";
+  permissionDetail.textContent = isSecure
+    ? "Lokasjon kan spørre om tilgang i denne nettleseren."
+    : "Lokasjon på telefon krever vanligvis HTTPS, for eksempel GitHub Pages.";
+}
+
+async function updateLocationPermissionView() {
+  updateSecureContextView();
+
+  if (!("permissions" in navigator) || !window.isSecureContext) {
+    return;
+  }
+
+  try {
+    const permission = await navigator.permissions.query({ name: "geolocation" });
+    const label = {
+      granted: "Godkjent",
+      denied: "Avslått",
+      prompt: "Spør ved bruk",
+    }[permission.state] || "Ukjent";
+
+    permissionValue.textContent = label;
+    permissionDetail.textContent =
+      permission.state === "denied"
+        ? "Lokasjon er avslått. Endre dette i nettleserens innstillinger."
+        : "Telefonen spør om lov når du henter lokasjon.";
+
+    permission.onchange = updateLocationPermissionView;
+  } catch {
+    permissionDetail.textContent = "Nettleseren viser ikke tillatelsesstatus.";
+  }
 }
 
 function setBatteryUnavailable() {
@@ -208,19 +257,26 @@ async function reverseGeocode(latitude, longitude) {
 
 function setCoordinateFallback(position) {
   const { latitude, longitude, accuracy } = position.coords;
+  lastCoordinates = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
   locationValue.textContent = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
   locationDetail.textContent = `Fant koordinater, men ikke by og land. N\u00f8yaktighet: ca. ${Math.round(
     accuracy
   )} meter.`;
+  copyLocationBtn.disabled = false;
 }
 
 function getLocation() {
+  vibrateShort();
+
   if (!("geolocation" in navigator)) {
     locationValue.textContent = "Ikke tilgjengelig";
     locationDetail.textContent = "Denne nettleseren st\u00f8tter ikke lokasjon.";
     return;
   }
 
+  locationBtn.disabled = true;
+  locationBtn.textContent = "Henter...";
+  copyLocationBtn.disabled = true;
   locationValue.textContent = "Henter...";
   locationDetail.textContent = "Venter p\u00e5 svar fra nettleseren.";
 
@@ -230,17 +286,26 @@ function getLocation() {
 
       try {
         const place = await reverseGeocode(latitude, longitude);
+        lastCoordinates = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
         locationValue.textContent = `${place.city}, ${place.country}`;
         locationDetail.textContent = `Koordinater: ${latitude.toFixed(5)}, ${longitude.toFixed(
           5
         )}. N\u00f8yaktighet: ca. ${Math.round(accuracy)} meter.`;
+        copyLocationBtn.disabled = false;
       } catch {
         setCoordinateFallback(position);
+      } finally {
+        locationBtn.disabled = false;
+        locationBtn.textContent = "Hent lokasjon";
+        updateLocationPermissionView();
       }
     },
     (error) => {
       locationValue.textContent = "Kunne ikke hente";
       locationDetail.textContent = error.message || "Lokasjon ble ikke godkjent.";
+      locationBtn.disabled = false;
+      locationBtn.textContent = "Hent lokasjon";
+      updateLocationPermissionView();
     },
     {
       enableHighAccuracy: true,
@@ -250,16 +315,37 @@ function getLocation() {
   );
 }
 
+async function copyLocation() {
+  if (!lastCoordinates) {
+    return;
+  }
+
+  vibrateShort();
+
+  try {
+    await navigator.clipboard.writeText(lastCoordinates);
+    copyLocationBtn.textContent = "Kopiert";
+    setTimeout(() => {
+      copyLocationBtn.textContent = "Kopier";
+    }, 1400);
+  } catch {
+    locationDetail.textContent = `${locationDetail.textContent} Kopiering ble ikke st\u00f8ttet.`;
+  }
+}
+
 function refreshAll() {
+  vibrateShort();
   initBattery();
   updateNetworkView();
   updateClock();
   updateScreenView();
+  updateLocationPermissionView();
   summaryDevice.textContent = getDeviceLabel();
 }
 
 refreshBtn.addEventListener("click", refreshAll);
 locationBtn.addEventListener("click", getLocation);
+copyLocationBtn.addEventListener("click", copyLocation);
 window.addEventListener("online", updateNetworkView);
 window.addEventListener("offline", updateNetworkView);
 window.addEventListener("resize", updateScreenView);
