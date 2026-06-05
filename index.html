@@ -3,200 +3,148 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#315c54">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="HverdagsHjelpen">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="format-detection" content="telephone=yes">
-    <title>HverdagsHjelpen</title>
-    <link rel="manifest" href="manifest.webmanifest">
-    <link rel="stylesheet" href="styles.css?v=1">
+    <title>Trygg Hverdag</title>
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <a class="skip-link" href="#main">Hopp til innhold</a>
+    <header class="top">
+      <div class="wrap top-inner">
+        <a class="logo" href="#start" aria-label="Gå til toppen">
+          <span aria-hidden="true">T</span>
+          Trygg Hverdag
+        </a>
 
-    <header class="site-header">
-      <div class="header-inner">
-        <div class="brand">
-          <div class="brand-symbol" aria-hidden="true">H</div>
-          <div>
-            <p class="eyebrow">For en tryggere hverdag</p>
-            <h1>HverdagsHjelpen</h1>
-          </div>
-        </div>
-        <button class="contrast-toggle" id="contrastToggle" type="button" aria-pressed="false">
-          Stor kontrast
-        </button>
+        <nav aria-label="Hovedmeny">
+          <a href="#behov">Behov</a>
+          <a href="#plan">Dagens plan</a>
+          <a href="#kontakt">Kontakt</a>
+          <a href="#hjelp">Hjelp</a>
+        </nav>
       </div>
     </header>
 
-    <main id="main">
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-copy">
-          <p class="section-label">Oversikt uten stress</p>
-          <h2 id="hero-title">Alt viktig samlet på ett sted</h2>
+    <main id="start">
+      <section class="hero wrap">
+        <div class="hero-text">
+          <p class="small-title">Enkel nettside for eldre</p>
+          <h1>En rolig oversikt over det viktigste i hverdagen</h1>
           <p>
-            En enkel side for eldre som trenger god oversikt over avtaler, medisiner,
-            kontakter og daglige påminnelser.
+            Denne siden hjelper eldre med å finne avtaler, viktige telefonnummer
+            og enkel hjelp uten at det blir for mye på skjermen.
           </p>
-          <div class="hero-actions" aria-label="Viktige handlinger">
-            <a class="action-button urgent" href="tel:113">Ring 113</a>
-            <a class="action-button" href="#contacts">Viktige kontakter</a>
-            <a class="action-button quiet" href="#today">Se dagens plan</a>
+          <div class="hero-buttons">
+            <a class="button primary" href="#plan">Se dagens plan</a>
+            <a class="button danger" href="tel:113">Ring 113</a>
           </div>
         </div>
 
-        <div class="hero-visual" aria-label="Illustrasjon av en rolig hverdagsoversikt">
-          <div class="phone-frame">
-            <div class="phone-top"></div>
-            <div class="phone-card green">
-              <span>09:00</span>
-              <strong>Ta morgenmedisin</strong>
-            </div>
-            <div class="phone-card blue">
-              <span>12:30</span>
-              <strong>Legetime</strong>
-            </div>
-            <div class="phone-card amber">
-              <span>16:00</span>
-              <strong>Ring familien</strong>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="need-band" aria-labelledby="needs-title">
-        <div>
-          <p class="section-label">Behov i fokus</p>
-          <h2 id="needs-title">Siden er laget for fire vanlige behov</h2>
-        </div>
-        <div class="need-grid">
-          <article>
-            <span aria-hidden="true">1</span>
-            <h3>Trygghet</h3>
-            <p>Rask tilgang til nødnummer og nærmeste kontaktperson.</p>
-          </article>
-          <article>
-            <span aria-hidden="true">2</span>
-            <h3>Oversikt</h3>
-            <p>Dagens avtaler og medisiner vises med store, tydelige felt.</p>
-          </article>
-          <article>
-            <span aria-hidden="true">3</span>
-            <h3>Selvstendighet</h3>
-            <p>Brukeren kan krysse av, legge til og endre egne punkter.</p>
-          </article>
-          <article>
-            <span aria-hidden="true">4</span>
-            <h3>Tilgjengelighet</h3>
-            <p>Store knapper, god kontrast og enkelt språk gjør siden lett å bruke.</p>
-          </article>
-        </div>
-      </section>
-
-      <section id="today" class="dashboard" aria-label="Dagens oversikt">
-        <article class="panel today-panel">
-          <div class="panel-header">
-            <div>
-              <p class="section-label">I dag</p>
-              <h2>Dagens plan</h2>
-            </div>
-            <p id="todayDate" class="date-pill">Laster dato</p>
-          </div>
-          <ul id="taskList" class="task-list" aria-live="polite"></ul>
-          <form id="taskForm" class="entry-form" autocomplete="off">
-            <label for="taskText">Legg til avtale eller påminnelse</label>
-            <div class="form-row">
-              <input id="taskText" name="taskText" type="text" maxlength="80" placeholder="For eksempel: Gåtur kl. 14">
-              <button type="submit">Legg til</button>
-            </div>
-          </form>
-        </article>
-
-        <aside class="panel medicine-panel" aria-labelledby="medicine-title">
-          <div class="panel-header">
-            <div>
-              <p class="section-label">Helse</p>
-              <h2 id="medicine-title">Medisiner</h2>
-            </div>
-          </div>
-          <ul id="medicineList" class="medicine-list" aria-live="polite"></ul>
-          <form id="medicineForm" class="entry-form" autocomplete="off">
-            <label for="medicineText">Legg til medisin</label>
-            <div class="form-row">
-              <input id="medicineText" name="medicineText" type="text" maxlength="80" placeholder="Navn og tidspunkt">
-              <button type="submit">Legg til</button>
-            </div>
-          </form>
-        </aside>
-      </section>
-
-      <section id="contacts" class="contact-section" aria-labelledby="contacts-title">
-        <div class="section-heading">
+        <div class="simple-card" aria-label="Eksempel på enkel oversikt">
           <div>
-            <p class="section-label">Trygg kontakt</p>
-            <h2 id="contacts-title">Viktige telefonnummer</h2>
+            <span>09:00</span>
+            <strong>Ta medisin</strong>
           </div>
-          <p>Numrene er store og kan trykkes direkte på mobil.</p>
+          <div>
+            <span>12:30</span>
+            <strong>Legetime</strong>
+          </div>
+          <div>
+            <span>16:00</span>
+            <strong>Ring familie</strong>
+          </div>
         </div>
-        <div class="contact-grid">
-          <a class="contact-card emergency" href="tel:113">
+      </section>
+
+      <section id="behov" class="section wrap">
+        <p class="small-title">Behov</p>
+        <h2>Hva trenger brukeren?</h2>
+        <div class="grid three">
+          <article>
+            <h3>Trygghet</h3>
+            <p>Brukeren skal raskt kunne finne nødnummer og viktige kontakter.</p>
+          </article>
+          <article>
+            <h3>Oversikt</h3>
+            <p>Avtaler og påminnelser må være enkle å lese og forstå.</p>
+          </article>
+          <article>
+            <h3>Lite stress</h3>
+            <p>Siden bruker få valg, store knapper og tydelige seksjoner.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="plan" class="section wrap">
+        <div class="section-head">
+          <div>
+            <p class="small-title">Dagens plan</p>
+            <h2>I dag</h2>
+          </div>
+          <button id="resetPlan" class="small-button" type="button">Start på nytt</button>
+        </div>
+
+        <div class="panel">
+          <label class="check-row">
+            <input type="checkbox">
+            <span>09:00 - Ta morgenmedisin</span>
+          </label>
+          <label class="check-row">
+            <input type="checkbox">
+            <span>12:30 - Legetime</span>
+          </label>
+          <label class="check-row">
+            <input type="checkbox">
+            <span>16:00 - Ring en i familien</span>
+          </label>
+        </div>
+      </section>
+
+      <section id="kontakt" class="section wrap">
+        <p class="small-title">Kontakt</p>
+        <h2>Viktige nummer</h2>
+        <div class="grid two">
+          <a class="phone danger-card" href="tel:113">
             <span>Akutt hjelp</span>
             <strong>113</strong>
-            <small>Ambulanse</small>
           </a>
-          <a class="contact-card" href="tel:116117">
+          <a class="phone" href="tel:116117">
             <span>Legevakt</span>
             <strong>116 117</strong>
-            <small>Når det haster, men ikke er livstruende</small>
           </a>
-          <a class="contact-card" href="tel:02800">
+          <a class="phone" href="tel:02800">
             <span>Politi</span>
             <strong>02800</strong>
-            <small>Ikke akutt</small>
           </a>
-          <a class="contact-card" href="tel:+4712345678">
+          <a class="phone" href="tel:+4712345678">
             <span>Pårørende</span>
             <strong>12 34 56 78</strong>
-            <small>Bytt til ekte nummer i oppgaven</small>
           </a>
         </div>
       </section>
 
-      <section class="service-section" aria-labelledby="services-title">
-        <div class="section-heading">
-          <div>
-            <p class="section-label">Praktisk hjelp</p>
-            <h2 id="services-title">Vanlige gjøremål</h2>
-          </div>
-        </div>
-        <div class="service-grid">
-          <button class="service-button" type="button" data-message="Husk legitimasjon, medisinliste og spørsmål du vil stille.">
-            Forbered legetime
+      <section id="hjelp" class="section wrap">
+        <p class="small-title">Hjelp</p>
+        <h2>Enkle valg</h2>
+        <div class="help-box">
+          <button type="button" data-text="Ta med medisinliste, legitimasjon og spørsmål du vil stille.">
+            Jeg skal til legen
           </button>
-          <button class="service-button" type="button" data-message="Skriv handlelisten rolig. Ta med briller, kort og bærenett.">
-            Handleliste
+          <button type="button" data-text="Skriv ned tre ting du trenger. Ta med kort, briller og handlenett.">
+            Jeg skal handle
           </button>
-          <button class="service-button" type="button" data-message="Drikk et glass vann, spis noe lett og ta en liten pause.">
-            Egenomsorg
-          </button>
-          <button class="service-button" type="button" data-message="Ring en pårørende eller send en kort melding hvis du føler deg utrygg.">
-            Føler meg utrygg
+          <button type="button" data-text="Ring en pårørende eller legevakt hvis du føler deg utrygg.">
+            Jeg føler meg utrygg
           </button>
         </div>
-        <p id="serviceMessage" class="service-message" role="status">
-          Trykk på et gjøremål for å få en enkel huskelapp.
-        </p>
+        <p id="helpText" class="message">Trykk på en knapp for å få en kort huskelapp.</p>
       </section>
     </main>
 
-    <footer>
+    <footer class="wrap">
       <p>
-        Skoleoppgave: Nettsiden viser hvordan behovene trygghet, oversikt,
-        selvstendighet og tilgjengelighet kan løses med enkel design.
+        Laget som en skoleoppgave med fokus på behov: trygghet, oversikt og enkel bruk.
       </p>
     </footer>
 
-    <script src="script.js?v=1"></script>
+    <script src="script.js"></script>
   </body>
 </html>
