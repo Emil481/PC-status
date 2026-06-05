@@ -1,16 +1,14 @@
-const CACHE_NAME = "enhetsstatus-v5";
+const CACHE_NAME = "hverdags-hjelpen-v1";
 const ASSETS = [
   "./",
   "./index.html",
-  "./styles.css?v=5",
-  "./script.js?v=5",
+  "./styles.css?v=1",
+  "./script.js?v=1",
   "./manifest.webmanifest"
 ];
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
-  );
+  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)));
   self.skipWaiting();
 });
 
@@ -42,12 +40,6 @@ self.addEventListener("fetch", (event) => {
   }
 
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) {
-        return cached;
-      }
-
-      return fetch(event.request).catch(() => caches.match("./index.html"));
-    })
+    caches.match(event.request).then((cached) => cached || fetch(event.request))
   );
 });

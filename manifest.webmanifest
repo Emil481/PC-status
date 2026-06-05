@@ -1,10 +1,10 @@
 {
-  "name": "Enhetsstatus",
-  "short_name": "Status",
-  "description": "Rask status for batteri, nett, skjerm og lokasjon.",
+  "name": "HverdagsHjelpen",
+  "short_name": "Hjelpen",
+  "description": "En enkel hverdagsportal for eldre med avtaler, medisiner og viktige kontakter.",
   "lang": "no",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#f4f6f8",
-  "theme_color": "#0f7b6c"
+  "background_color": "#f5f3ed",
+  "theme_color": "#315c54"
 }

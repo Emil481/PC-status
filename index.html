@@ -3,148 +3,200 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#0f7b6c">
+    <meta name="theme-color" content="#315c54">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="Status">
+    <meta name="apple-mobile-web-app-title" content="HverdagsHjelpen">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="format-detection" content="telephone=no">
-    <title>Enhetsstatus v5</title>
+    <meta name="format-detection" content="telephone=yes">
+    <title>HverdagsHjelpen</title>
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="stylesheet" href="styles.css?v=5">
-    <style>
-      .version-ribbon {
-        position: fixed;
-        z-index: 50;
-        left: 12px;
-        bottom: 12px;
-        border-radius: 999px;
-        background: #ffbf3f;
-        color: #17202a;
-        padding: 9px 12px;
-        font: 700 13px Arial, Helvetica, sans-serif;
-        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
-      }
-    </style>
+    <link rel="stylesheet" href="styles.css?v=1">
   </head>
   <body>
-    <div class="version-ribbon">NY DESIGN v5</div>
-    <main class="app-shell">
-      <section class="status-panel" aria-labelledby="page-title">
-        <div class="hero-band" aria-hidden="true">
-          <span class="hero-pill hero-pill-one"></span>
-          <span class="hero-pill hero-pill-two"></span>
-          <span class="hero-pill hero-pill-three"></span>
+    <a class="skip-link" href="#main">Hopp til innhold</a>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="brand">
+          <div class="brand-symbol" aria-hidden="true">H</div>
+          <div>
+            <p class="eyebrow">For en tryggere hverdag</p>
+            <h1>HverdagsHjelpen</h1>
+          </div>
+        </div>
+        <button class="contrast-toggle" id="contrastToggle" type="button" aria-pressed="false">
+          Stor kontrast
+        </button>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="section-label">Oversikt uten stress</p>
+          <h2 id="hero-title">Alt viktig samlet på ett sted</h2>
+          <p>
+            En enkel side for eldre som trenger god oversikt over avtaler, medisiner,
+            kontakter og daglige påminnelser.
+          </p>
+          <div class="hero-actions" aria-label="Viktige handlinger">
+            <a class="action-button urgent" href="tel:113">Ring 113</a>
+            <a class="action-button" href="#contacts">Viktige kontakter</a>
+            <a class="action-button quiet" href="#today">Se dagens plan</a>
+          </div>
         </div>
 
-        <div class="top-row">
-          <div class="title-lockup">
-            <span class="brand-mark" aria-hidden="true">
-              <span></span>
-            </span>
-            <div>
-              <p class="eyebrow">Mobil og PC</p>
-              <h1 id="page-title">Enhetsstatus</h1>
-              <p class="intro">Rask oversikt over det som betyr mest på telefonen akkurat nå.</p>
+        <div class="hero-visual" aria-label="Illustrasjon av en rolig hverdagsoversikt">
+          <div class="phone-frame">
+            <div class="phone-top"></div>
+            <div class="phone-card green">
+              <span>09:00</span>
+              <strong>Ta morgenmedisin</strong>
+            </div>
+            <div class="phone-card blue">
+              <span>12:30</span>
+              <strong>Legetime</strong>
+            </div>
+            <div class="phone-card amber">
+              <span>16:00</span>
+              <strong>Ring familien</strong>
             </div>
           </div>
-          <button id="refreshBtn" class="icon-button" type="button" title="Oppdater status" aria-label="Oppdater status">
-            &#8635;
+        </div>
+      </section>
+
+      <section class="need-band" aria-labelledby="needs-title">
+        <div>
+          <p class="section-label">Behov i fokus</p>
+          <h2 id="needs-title">Siden er laget for fire vanlige behov</h2>
+        </div>
+        <div class="need-grid">
+          <article>
+            <span aria-hidden="true">1</span>
+            <h3>Trygghet</h3>
+            <p>Rask tilgang til nødnummer og nærmeste kontaktperson.</p>
+          </article>
+          <article>
+            <span aria-hidden="true">2</span>
+            <h3>Oversikt</h3>
+            <p>Dagens avtaler og medisiner vises med store, tydelige felt.</p>
+          </article>
+          <article>
+            <span aria-hidden="true">3</span>
+            <h3>Selvstendighet</h3>
+            <p>Brukeren kan krysse av, legge til og endre egne punkter.</p>
+          </article>
+          <article>
+            <span aria-hidden="true">4</span>
+            <h3>Tilgjengelighet</h3>
+            <p>Store knapper, god kontrast og enkelt språk gjør siden lett å bruke.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="today" class="dashboard" aria-label="Dagens oversikt">
+        <article class="panel today-panel">
+          <div class="panel-header">
+            <div>
+              <p class="section-label">I dag</p>
+              <h2>Dagens plan</h2>
+            </div>
+            <p id="todayDate" class="date-pill">Laster dato</p>
+          </div>
+          <ul id="taskList" class="task-list" aria-live="polite"></ul>
+          <form id="taskForm" class="entry-form" autocomplete="off">
+            <label for="taskText">Legg til avtale eller påminnelse</label>
+            <div class="form-row">
+              <input id="taskText" name="taskText" type="text" maxlength="80" placeholder="For eksempel: Gåtur kl. 14">
+              <button type="submit">Legg til</button>
+            </div>
+          </form>
+        </article>
+
+        <aside class="panel medicine-panel" aria-labelledby="medicine-title">
+          <div class="panel-header">
+            <div>
+              <p class="section-label">Helse</p>
+              <h2 id="medicine-title">Medisiner</h2>
+            </div>
+          </div>
+          <ul id="medicineList" class="medicine-list" aria-live="polite"></ul>
+          <form id="medicineForm" class="entry-form" autocomplete="off">
+            <label for="medicineText">Legg til medisin</label>
+            <div class="form-row">
+              <input id="medicineText" name="medicineText" type="text" maxlength="80" placeholder="Navn og tidspunkt">
+              <button type="submit">Legg til</button>
+            </div>
+          </form>
+        </aside>
+      </section>
+
+      <section id="contacts" class="contact-section" aria-labelledby="contacts-title">
+        <div class="section-heading">
+          <div>
+            <p class="section-label">Trygg kontakt</p>
+            <h2 id="contacts-title">Viktige telefonnummer</h2>
+          </div>
+          <p>Numrene er store og kan trykkes direkte på mobil.</p>
+        </div>
+        <div class="contact-grid">
+          <a class="contact-card emergency" href="tel:113">
+            <span>Akutt hjelp</span>
+            <strong>113</strong>
+            <small>Ambulanse</small>
+          </a>
+          <a class="contact-card" href="tel:116117">
+            <span>Legevakt</span>
+            <strong>116 117</strong>
+            <small>Når det haster, men ikke er livstruende</small>
+          </a>
+          <a class="contact-card" href="tel:02800">
+            <span>Politi</span>
+            <strong>02800</strong>
+            <small>Ikke akutt</small>
+          </a>
+          <a class="contact-card" href="tel:+4712345678">
+            <span>Pårørende</span>
+            <strong>12 34 56 78</strong>
+            <small>Bytt til ekte nummer i oppgaven</small>
+          </a>
+        </div>
+      </section>
+
+      <section class="service-section" aria-labelledby="services-title">
+        <div class="section-heading">
+          <div>
+            <p class="section-label">Praktisk hjelp</p>
+            <h2 id="services-title">Vanlige gjøremål</h2>
+          </div>
+        </div>
+        <div class="service-grid">
+          <button class="service-button" type="button" data-message="Husk legitimasjon, medisinliste og spørsmål du vil stille.">
+            Forbered legetime
+          </button>
+          <button class="service-button" type="button" data-message="Skriv handlelisten rolig. Ta med briller, kort og bærenett.">
+            Handleliste
+          </button>
+          <button class="service-button" type="button" data-message="Drikk et glass vann, spis noe lett og ta en liten pause.">
+            Egenomsorg
+          </button>
+          <button class="service-button" type="button" data-message="Ring en pårørende eller send en kort melding hvis du føler deg utrygg.">
+            Føler meg utrygg
           </button>
         </div>
-
-        <div class="summary-strip" aria-label="Kort status">
-          <div>
-            <span class="summary-label">Nett</span>
-            <strong id="summaryNetwork">Sjekker...</strong>
-          </div>
-          <div>
-            <span class="summary-label">Tid</span>
-            <strong id="summaryTime">--:--</strong>
-          </div>
-          <div>
-            <span class="summary-label">Enhet</span>
-            <strong id="summaryDevice">Ukjent</strong>
-          </div>
-          <div>
-            <span class="summary-label">Sikkerhet</span>
-            <strong id="summarySecure">Sjekker...</strong>
-          </div>
-        </div>
-
-        <div class="status-grid">
-          <article class="metric-card">
-            <div class="metric-header">
-              <span class="metric-icon" aria-hidden="true">%</span>
-              <h2>Batteristøtte</h2>
-            </div>
-            <div class="battery-meter" aria-hidden="true">
-              <div id="batteryFill" class="battery-fill"></div>
-            </div>
-            <p id="batteryPercent" class="metric-value">Laster...</p>
-            <p id="batteryState" class="metric-detail">Sjekker om nettleseren kan lese batteri.</p>
-          </article>
-
-          <article class="metric-card">
-            <div class="metric-header">
-              <span class="metric-icon" aria-hidden="true">+</span>
-              <h2>Lokasjon</h2>
-            </div>
-            <p id="locationValue" class="metric-value small">Ikke hentet enn&aring;</p>
-            <p id="locationDetail" class="metric-detail">Trykk p&aring; knappen for &aring; vise by og land.</p>
-            <p id="locationUpdated" class="mini-detail">Ikke oppdatert enn&aring;.</p>
-            <div class="button-row">
-              <button id="locationBtn" class="primary-button" type="button">Hent lokasjon</button>
-              <button id="copyLocationBtn" class="secondary-button" type="button" disabled>Kopier</button>
-              <button id="mapLocationBtn" class="secondary-button" type="button" disabled>Kart</button>
-              <button id="shareLocationBtn" class="secondary-button" type="button" disabled>Del</button>
-            </div>
-          </article>
-
-          <article class="metric-card compact">
-            <div class="metric-header">
-              <span class="metric-icon" aria-hidden="true">~</span>
-              <h2>Nettverk</h2>
-            </div>
-            <p id="networkValue" class="metric-value small">Sjekker...</p>
-            <p id="networkDetail" class="metric-detail">Viser om nettleseren er online.</p>
-          </article>
-
-          <article class="metric-card compact">
-            <div class="metric-header">
-              <span class="metric-icon" aria-hidden="true">#</span>
-              <h2>Skjerm</h2>
-            </div>
-            <p id="screenValue" class="metric-value small">Sjekker...</p>
-            <p id="screenDetail" class="metric-detail">Viser skjermbredde, h&oslash;yde og retning.</p>
-          </article>
-
-          <article class="metric-card compact">
-            <div class="metric-header">
-              <span class="metric-icon" aria-hidden="true">!</span>
-              <h2>Tilgang</h2>
-            </div>
-            <p id="permissionValue" class="metric-value small">Sjekker...</p>
-            <p id="permissionDetail" class="metric-detail">Viser om nettleseren kan bruke lokasjon her.</p>
-          </article>
-        </div>
-
-        <section id="chargeAdvice" class="advice" aria-live="polite">
-          Venter p&aring; batteridata.
-        </section>
-
-        <section class="tips" aria-labelledby="tips-title">
-          <h2 id="tips-title">Mobilnotat</h2>
-          <ul>
-            <li>Lokasjon fungerer best n&aring;r siden &aring;pnes med HTTPS.</li>
-            <li>Batteriprosent kan v&aelig;re skjult p&aring; iPhone og enkelte nettlesere.</li>
-            <li>Legg siden p&aring; hjemskjermen hvis du vil bruke den som en liten statusapp.</li>
-          </ul>
-        </section>
+        <p id="serviceMessage" class="service-message" role="status">
+          Trykk på et gjøremål for å få en enkel huskelapp.
+        </p>
       </section>
     </main>
 
-    <noscript>Denne siden trenger JavaScript for &aring; hente lokasjon og batteristatus.</noscript>
+    <footer>
+      <p>
+        Skoleoppgave: Nettsiden viser hvordan behovene trygghet, oversikt,
+        selvstendighet og tilgjengelighet kan løses med enkel design.
+      </p>
+    </footer>
 
-    <script src="script.js?v=5"></script>
+    <script src="script.js?v=1"></script>
   </body>
 </html>

@@ -1,29 +1,28 @@
-# PC-status
+# HverdagsHjelpen
 
-En enkel GitHub Pages-side som fungerer paa PC og telefon, og viser:
+En enkel nettside laget for en skoleoppgave der behov spiller en viktig rolle.
+Målgruppen er eldre brukere som trenger en rolig og oversiktlig løsning.
 
-- batteriprosent, hvis nettleseren stotter Battery Status API
-- om enheten lader eller gaar paa batteri
-- om enheten bor lades
-- nettstatus, skjermstorrelse, retning og lokal tid
-- om siden er klar for lokasjon paa telefon
-- by og land, hvis brukeren gir nettleseren lokasjonstilgang
-- kopiering av koordinater etter at lokasjon er hentet
-- kartlenke og deling av lokasjon paa telefon
-- automatisk mork modus hvis enheten bruker det
-- enkel offline-stotte etter forste besok paa HTTPS
+## Hva siden handler om
 
-## Publiser paa GitHub Pages
+Siden er en hverdagsportal for eldre. Den samler:
 
-Last opp disse filene til repoet ditt:
+- dagens avtaler og påminnelser
+- medisiner
+- viktige telefonnummer
+- enkle huskelapper for vanlige gjøremål
+- valg for større kontrast
 
-- `index.html`
-- `styles.css`
-- `script.js`
-- `sw.js`
-- `manifest.webmanifest`
-- `README.md`
+## Behov som er løst
 
-Gaa deretter til `Settings` -> `Pages` i GitHub-repoet, velg `Deploy from a branch`, branch `main`, og mappe `/root`.
+- Trygghet: nødnummer og viktige kontakter er lette å finne.
+- Oversikt: dagens plan og medisiner ligger samlet.
+- Selvstendighet: brukeren kan legge til, krysse av og fjerne egne punkter.
+- Tilgjengelighet: store knapper, enkel tekst, god kontrast og tydelig struktur.
 
-Merk: Lokasjon krever at brukeren godkjenner tilgang. Batteridata og lading fungerer ikke i alle nettlesere. Safari stotter normalt ikke dette for vanlige nettsider, og Chrome krever HTTPS/sikker kontekst. Telefoner skjuler ofte batteriprosenten helt.
+## Teknologi
+
+Nettsiden bruker vanlig HTML, CSS og JavaScript. Punkter lagres i nettleseren
+med `localStorage`, så de blir værende etter at siden lastes inn på nytt.
+
+Åpne `index.html` i nettleseren, eller legg mappen på en lokal webserver.
